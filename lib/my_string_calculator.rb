@@ -1,5 +1,5 @@
 class MyStringCalculator
-  def add(numbers)  
+  def add(numbers)
     return 0 if numbers.empty?
 
     delimiter = /,|\n/
@@ -9,6 +9,12 @@ class MyStringCalculator
       numbers = parts.last
     end
 
-    numbers.split(/#{delimiter}/).map(&:to_i).sum
+    nums = numbers.split(/#{delimiter}/).map(&:to_i)
+    negatives = nums.select { |n| n < 0 }
+    unless negatives.empty?
+      raise "negative numbers not allowed: #{negatives.join(',')}"
+    end
+
+    nums.sum
   end
 end
