@@ -12,9 +12,16 @@ class MyStringCalculator
     nums = numbers.split(/#{delimiter}/).map(&:to_i)
     negatives = nums.select { |n| n < 0 }
     unless negatives.empty?
-      raise "negative numbers not allowed: #{negatives.join(',')}"
+      raise NegativeNumberError.new(negatives)
     end
 
     nums.sum
+  end
+end
+
+
+class NegativeNumberError < StandardError
+  def initialize(negatives)
+    super("negative numbers not allowed: #{negatives.join(', ')}")
   end
 end
