@@ -3,11 +3,8 @@ class MyStringCalculator
     return 0 if numbers.empty?
 
     delimiter = /,|\n/
-    if numbers.start_with?('//')
-      parts = numbers.split("\n", 2)
-      delimiter = Regexp.escape(parts.first[2])
-      numbers = parts.last
-    end
+
+    numbers, delimiter = extract_custom_delimiter(numbers) if numbers.start_with?('//')
 
     nums = numbers.split(/#{delimiter}/).map(&:to_i)
     check_for_negatives(nums)
@@ -16,6 +13,13 @@ class MyStringCalculator
   end
 
   private
+
+  def extract_custom_delimiter(numbers)
+    parts = numbers.split("\n", 2)
+    custom_delimiter = parts.first[2]
+    delimiter = Regexp.escape(custom_delimiter)
+    [parts.last, delimiter]
+  end
 
   def check_for_negatives(nums)
     negatives = nums.select { |n| n < 0 }
