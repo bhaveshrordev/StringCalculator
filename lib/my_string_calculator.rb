@@ -10,15 +10,19 @@ class MyStringCalculator
     end
 
     nums = numbers.split(/#{delimiter}/).map(&:to_i)
-    negatives = nums.select { |n| n < 0 }
-    unless negatives.empty?
-      raise NegativeNumberError.new(negatives)
-    end
+    check_for_negatives(nums)
 
     nums.sum
   end
-end
 
+  private
+
+  def check_for_negatives(nums)
+    negatives = nums.select { |n| n < 0 }
+    raise NegativeNumberError.new(negatives) unless negatives.empty?
+  end
+
+end
 
 class NegativeNumberError < StandardError
   def initialize(negatives)
